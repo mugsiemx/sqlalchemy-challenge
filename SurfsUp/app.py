@@ -31,12 +31,12 @@ Station = Base.classes.station
 # Flask Setup
 #################################################
 app = Flask(__name__)
-
-
 #################################################
 # Flask Routes
 #################################################
 # all available api routes
+
+
 @app.route("/")
 def welcome():
     """List all available api routes."""
@@ -106,7 +106,7 @@ def stations():
         stations_dict["elevation"] = elevation
         all_stations.append(stations_dict)
 
-    return jsonify(all_stations)
+    return jsonify(stations_dict)
 
 
 @ app.route("/api/v1.0/tobs")
@@ -126,15 +126,15 @@ def tobs():
     for recent_date in recent_date_str:
         recent_date = dt.datetime.strptime(recent_date_str, "%Y-%m-%d")
     # date one year ago
-    one_year_ago = recent_date - timedelta(days=365)
-
+    one_year_ago = recent_date - dt.timedelta(days=365)
+    one_year_ago = dt.datetime.date(one_year_ago)
     # Query temperatures for the most active station for the dates from a year ago from most recent date
-    results = session.query(Measurement.tobs).\
+    results = session.query(Measurement.date, Measurement.tobs).\
         filter(Measurement.station == f'''{most_active_station}''').\
         filter(Measurement.date >= one_year_ago).all()
 
     session.close()
-
+# filter(Measurement.date.between(one_year_ago, recent_date)).all()
     # Create a dictionary from the row data and append to a list of all_temperatures
     all_temperatures = []
     for date, tobs in results:
@@ -143,11 +143,11 @@ def tobs():
         temperatures_dict["temperature"] = tobs
         all_temperatures.append(temperatures_dict)
 
-    return jsonify(all_temperatures)
+    return jsonify(temperatures_dict)
 
 
 #################################################
-# Flask App to run in terminal with python.app.py
+# Flask App to run in terminal with python app.py
 #################################################
 if __name__ == '__main__':
     app.run(debug=True)

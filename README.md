@@ -65,6 +65,8 @@ In this section, I’ll use Python and SQLAlchemy to do a basic climate analysis
 
    - Listed the stations and observation counts in descending order by using the func.count funtion in my query.
 
+   ![](https://github.com/mugsiemx/sqlalchemy-challenge/blob/main/SurfsUp/Images/most_active_stations.jpg)
+
    - The station id that has the greatest number of observations was station USC00519281, named WAIHEE 837.5, HI US. Used the hint to: Join the station and measurement tables for some of the queries.
    
    ![](https://github.com/mugsiemx/sqlalchemy-challenge/blob/main/SurfsUp/Images/most_active_stations.jpg)

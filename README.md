@@ -2,6 +2,8 @@
 
 # Unit 10 Homework: Surf’s Up
 
+![](https://github.com/mugsiemx/sqlalchemy-challenge/blob/main/SurfsUp/Images/sql.jpg)
+
 ### Began with
 
 1. Created a new repository for this project called `sqlalchemy-challenge`.
@@ -16,6 +18,8 @@ Download the following files to help to get started:
 [Module 10 Challenge files](https://static.bc-edx.com/data/dl-1-2/m10/lms/starter/Starter_Code.zip)
 
 ### Instructions
+
+![](https://github.com/mugsiemx/sqlalchemy-challenge/blob/main/SurfsUp/Images/Hawaii.jpg)
 
 Congratulations to me! My wonderful husband decided to treat us to a long holiday vacation in Honolulu, Hawaii. To help with our trip planning, I decided to do a climate analysis about the area. The following sections outline the steps that I needed to take to accomplish this task.
 
@@ -47,10 +51,14 @@ In this section, I’ll use Python and SQLAlchemy to do a basic climate analysis
 
 6. Ploted the results by using the DataFrame `plot` method, as the following image shows:
 
+   ![](https://github.com/mugsiemx/sqlalchemy-challenge/blob/main/SurfsUp/Images/PrecipitationsFOR12months.png)
+
    ![A screenshot depicts the plot.](https://static.bc-edx.com/data/dl-1-2/m10/lms/img/precipitation.jpg)
 
 7. Use Pandas to print the summary statistics for the precipitation data.
 
+   ![](https://github.com/mugsiemx/sqlalchemy-challenge/blob/main/SurfsUp/Images/precipitation_summary_statistics.jpg)
+   
 ##### Station Analysis
 
 1. Designed a query to calculate the total number of stations in the dataset.
@@ -60,8 +68,12 @@ In this section, I’ll use Python and SQLAlchemy to do a basic climate analysis
    - Listed the stations and observation counts in descending order by using the func.count funtion in my query.
 
    - The station id that has the greatest number of observations was station USC00519281, named WAIHEE 837.5, HI US. Used the hint to: Join the station and measurement tables for some of the queries.
+   
+   ![](https://github.com/mugsiemx/sqlalchemy-challenge/blob/main/SurfsUp/Images/most_active_stations.jpg)
 
 3. Designed a query that calculates the lowest, highest, and average temperatures that filters on the most-active station id found in the previous query by using functions such as `func.min`, `func.max`, and `func.avg` in your query.
+
+   ![](https://github.com/mugsiemx/sqlalchemy-challenge/blob/main/SurfsUp/Images/precipitation_summary_statistics.jpg)
 
 4. Designed a query to get the previous 12 months of temperature observation (TOBS) data. To do so, completed the following steps:
 
@@ -70,9 +82,11 @@ In this section, I’ll use Python and SQLAlchemy to do a basic climate analysis
    - Queried the previous 12 months of TOBS data for that station.
 
    - Ploted the results as a histogram with `bins=12`, as the following image shows:
-
+      
+      ![](https://github.com/mugsiemx/sqlalchemy-challenge/blob/main/SurfsUp/Images/USC00519281Temperatures.png)
+      
      ![A screenshot depicts the histogram.](https://static.bc-edx.com/data/dl-1-2/m10/lms/img/station-histogram.jpg)
-
+     
 5. Closed your session. (Very Important)
 
 #### Part 2: Design Your Climate App
@@ -82,7 +96,9 @@ Now that I’ve completed my initial analysis, I’ll design a Flask API based o
 1. `/`
 
    - Started at the homepage.
-
+   
+   ![](https://github.com/mugsiemx/sqlalchemy-challenge/blob/main/SurfsUp/Images/loccalhost_image.jpg)
+   
    - Listed all the available routes.
 
 2. `/api/v1.0/precipitation`
@@ -108,5 +124,9 @@ Now that I’ve completed my initial analysis, I’ll design a Flask API based o
    - For a specified start, calculate `TMIN`, `TAVG`, and `TMAX` for all the dates greater than or equal to the start date.
 
    - For a specified start date and end date, calculate `TMIN`, `TAVG`, and `TMAX` for the dates from the start date to the end date, inclusive.
-
+   
+   ![](https://github.com/mugsiemx/sqlalchemy-challenge/blob/main/SurfsUp/Images/last_api_route.jpg)
+   
 ## End of Assignment
+   ![](https://github.com/mugsiemx/sqlalchemy-challenge/blob/main/SurfsUp/Images/task_completed.jpg)
+photos credit to iStock

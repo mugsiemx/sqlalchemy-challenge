@@ -51,7 +51,7 @@ In this section, I’ll use Python and SQLAlchemy to do a basic climate analysis
 
 6. Ploted the results by using the DataFrame `plot` method, as the following image shows:
 
-   ![](https://github.com/mugsiemx/sqlalchemy-challenge/blob/main/SurfsUp/Images/PrecipitationsFOR12months.png}
+   ![](https://github.com/mugsiemx/sqlalchemy-challenge/blob/main/SurfsUp/Images/PrecipitationsFOR12months.png)
 
 7. Use Pandas to print the summary statistics for the precipitation data.
 

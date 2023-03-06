@@ -41,18 +41,19 @@ app = Flask(__name__)
 def welcome():
     """List all available api routes."""
     return (
-        f"Welcome to Sheila's app!!<br/>"
+        f"Welcome to Sheila's Climate app!!<br/>"
+        f"<br>"
         f"Available Routes:<br/>"
         f"/api/v1.0/precipitation<br/>"
         f"/api/v1.0/stations<br/>"
-        f"/api/v1.0/tobs<br/>"
-        f"/api/v1.0/Start Date <start><br/>"
-        f"/api/v1.0/Start Date <start>/End Date <end><br/>"
+        f"/api/v1.0/temperature<br/>"
+        f"/api/v1.0/<start><br/>"
+        f"/api/v1.0/<start>/<end><br/>"
     )
 
-# 1 of 6 api routes
+# 1 of 5 api routes
 
-
+# 1 of 5 api routes
 @app.route("/api/v1.0/precipitation")
 def precipitation():
     # Create our session (link) from Python to the DB
@@ -71,7 +72,8 @@ def precipitation():
     one_year_ago = recent_date - timedelta(days=365)
     # query the results as above
     results = session.query(Measurement.date, Measurement.prcp).\
-        filter(Measurement.date >= one_year_ago).all()
+        filter(Measurement.date >= one_year_ago).\
+        order_by(Measurement.date).all()
     # close this session
     session.close()
   # Create a dictionary from the row data and append to a list of all_precipitations
@@ -81,15 +83,15 @@ def precipitation():
         precipitations_dict["date"] = date
         precipitations_dict["prcp"] = prcp
         all_precipitations.append(precipitations_dict)
-    return jsonify(precipitations_dict)
+    return jsonify(all_precipitations)
 
-
+# 2 of 5 api routes
 @ app.route("/api/v1.0/stations")
 def stations():
     # Create our session (link) from Python to the DB
     session = Session(engine)
 
-    """Return a list of weather station data"""
+    """Return a list of weather stations"""
     # Query all stations
     results = session.query(Station.station, Station.name,
                             Station.latitude, Station.longitude, Station.elevation).all()
@@ -103,13 +105,14 @@ def stations():
         stations_dict["station"] = station
         stations_dict["name"] = name
         stations_dict["latitude"] = latitude
+        stations_dict["longitude"] = longitude
         stations_dict["elevation"] = elevation
         all_stations.append(stations_dict)
 
-    return jsonify(stations_dict)
+    return jsonify(all_stations)
 
-
-@ app.route("/api/v1.0/tobs")
+# 3 of 5 api routes
+@ app.route("/api/v1.0/temperature")
 def tobs():
     # Create our session (link) from Python to the DB
     session = Session(engine)
@@ -117,35 +120,84 @@ def tobs():
     """Return a list of temperatures"""
     # first locate the most active weather station
     most_active_station_result = session.query(Measurement.station).\
-        group_by(Measurement.station).order_by(
-        func.count(Measurement.station).desc()).first()
+        group_by(Measurement.station).order_by(func.count(Measurement.station).desc()).first()        
     most_active_station = most_active_station_result[0]
     # next locate the most recent date observed and the date a year ago from that date
     # date recent
     recent_date_str = session.query(func.max(Measurement.date)).one()[0]
     for recent_date in recent_date_str:
         recent_date = dt.datetime.strptime(recent_date_str, "%Y-%m-%d")
-    # date one year ago
-    one_year_ago = recent_date - dt.timedelta(days=365)
-    one_year_ago = dt.datetime.date(one_year_ago)
-    # Query temperatures for the most active station for the dates from a year ago from most recent date
-    results = session.query(Measurement.date, Measurement.tobs).\
-        filter(Measurement.station == f'''{most_active_station}''').\
-        filter(Measurement.date >= one_year_ago).all()
 
+    one_year_ago = recent_date - timedelta(days=365)
+    # query the results as above
+    results = session.query(Measurement.date, Measurement.tobs).\
+        filter(Measurement.date >= one_year_ago).\
+        order_by(Measurement.date).all()
+    # close this session
     session.close()
-# filter(Measurement.date.between(one_year_ago, recent_date)).all()
-    # Create a dictionary from the row data and append to a list of all_temperatures
+  # Create a dictionary from the row data and append to a list of all_precipitations
     all_temperatures = []
     for date, tobs in results:
         temperatures_dict = {}
         temperatures_dict["date"] = date
-        temperatures_dict["temperature"] = tobs
+        temperatures_dict["tobs"] = tobs
         all_temperatures.append(temperatures_dict)
 
-    return jsonify(temperatures_dict)
+    return jsonify(all_temperatures)
 
+# 4 of 5 api routes
+@ app.route("/api/v1.0/<start>")
+def start(start):
+    # Create our session (link) from Python to the DB
+    session = Session(engine)
 
+    # string date in api route convert to date format
+    start_date = dt.datetime.strptime(start, '%Y-%m-%d')
+
+    """Return a list of temperature min, max, avg for a start_date through the last observed"""
+    # query the results as above
+    results = session.query(func.min(Measurement.tobs), func.max(Measurement.tobs), func.avg(Measurement.tobs)).\
+        filter(Measurement.date >= start_date).all()
+    # close this session
+    session.close()
+  # Create a dictionary from the row data and append to a list of all_precipitations
+    all_functions = []
+    for min, max, avg in results:
+        functions_dict = {}
+        functions_dict["Minimum_Temperature"] = min
+        functions_dict["Maximum_Temperature"] = max
+        functions_dict["Average_Temperature"] = avg
+        all_functions.append(functions_dict)
+
+    return jsonify(all_functions)
+
+# 5 of 5 api routes
+@ app.route("/api/v1.0/<start>/<end>")
+def both(start, end):
+    # Create our session (link) from Python to the DB
+    session = Session(engine)
+
+    # string date in api route convert to date format
+    start_date = dt.datetime.strptime(start, '%Y-%m-%d')
+    end_date = dt.datetime.strptime(end, '%Y-%m-%d')
+
+    """Return a list of temperature min, max, avg for a start_date through the last observed"""
+    # query the results as above
+    results = session.query(func.min(Measurement.tobs), func.max(Measurement.tobs), func.avg(Measurement.tobs)).\
+        filter(Measurement.date >= start_date).\
+        filter(Measurement.date <= end_date).all()
+    # close this session
+    session.close()
+  # Create a dictionary from the row data and append to a list of all_precipitations
+    all_functions = []
+    for min, max, avg in results:
+        functions_dict = {}
+        functions_dict["Minimum_Temperature"] = min
+        functions_dict["Maximum_Temperature"] = max
+        functions_dict["Average_Temperature"] = avg
+        all_functions.append(functions_dict)
+
+    return jsonify(all_functions)
 #################################################
 # Flask App to run in terminal with python app.py
 #################################################

@@ -77,7 +77,7 @@ In this section, I’ll use Python and SQLAlchemy to do a basic climate analysis
 
 #### Part 2: Design Your Climate App
 
-Now that I’ve completed my initial analysis, I’ll design a Flask API based on the queries that I just developed. To do so, used Flask to create myroutes as follows:
+Now that I’ve completed my initial analysis, I’ll design a Flask API based on the queries that I just developed. Used Flask to create my routes as follows:
 
 1. `/`
 
@@ -101,7 +101,7 @@ Now that I’ve completed my initial analysis, I’ll design a Flask API based o
 
    - Returned a JSON list of temperature observations for the previous year.
 
-5. `/api/v1.0/<start>` and `/api/v1.0/<start>/<end>`
+5. `/api/v1.0/<start>` and `/api/v1.0/<start>/<end>` (This could have been a looped procedure)
 
    - Returned a JSON list of the minimum temperature, the average temperature, and the maximum temperature for a specified start or start-end range.
 
